@@ -4,7 +4,8 @@ import {
     Text,
     SafeAreaView,
     Image,
-    TextInput
+    TextInput,
+    ScrollView
 } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import {
@@ -13,6 +14,9 @@ import {
     MagnifyingGlassIcon,
     AdjustmentsVerticalIcon
 } from 'react-native-heroicons/outline'
+import Categories from '../components/Categories'
+import FeaturedRow from '../components/FeaturedRow'
+import { DeliverooColor } from '../assets/Colors'
 
 const HomeScreen = () => {
     const [searchItem, setSearchItem] = useState("")
@@ -35,9 +39,9 @@ const HomeScreen = () => {
 
 
     return (
-        <SafeAreaView className='bg-white pt-5'>
+        <SafeAreaView className='pt-5 bg-slate-50 mb-24'>
             {/* header */}
-            <View className='flex-row pb-3 items-center mx-2 space-x-2'>
+            <View className='flex-row pb-3 items-center mx-4 space-x-2'>
                 <Image
                     source={{ uri: 'https://links.papareact.com/wru' }}
                     className='h-7 w-7 bg-gray-300 p-4 rounded-full' />
@@ -45,11 +49,11 @@ const HomeScreen = () => {
                 <View className='flex-1'>
                     <Text className='font-bold text-gray-400 text-xs'>Deliver Now!</Text>
                     <Text className='font-bold text-xl'>Current Location
-                        <ChevronDownIcon size={20} color="#00ccBB" />
+                        <ChevronDownIcon size={20} color={DeliverooColor} />
                     </Text>
                 </View>
 
-                <UserIcon size={35} color="#00ccBB" />
+                <UserIcon size={35} color={DeliverooColor} />
             </View>
 
             {/* search */}
@@ -62,8 +66,40 @@ const HomeScreen = () => {
                         onChangeText={loadSearchItem}
                     />
                 </View>
-                <AdjustmentsVerticalIcon size={25} color="#00ccBB" />
+                <AdjustmentsVerticalIcon size={25} color={DeliverooColor} />
             </View>
+
+            {/* body */}
+            <ScrollView
+                className="bg-gray-100"
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    paddingBottom: 100
+                }}
+            >
+                {/* Categories Row */}
+                <Categories />
+
+                {/* Featured Row */}
+                <FeaturedRow
+                    id="123"
+                    title="Offers near you!"
+                    description="Why not support your local restaurant tonight!"
+                />
+
+                <FeaturedRow
+                    id="1234"
+                    title="Featured"
+                    description="Paid placements for our partners"
+                />
+
+                <FeaturedRow
+                    id="12345"
+                    title="Tasty Discounts"
+                    description="Paid placements for our partners"
+                />
+
+            </ScrollView>
 
         </SafeAreaView>
     )
