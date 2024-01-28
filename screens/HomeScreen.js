@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import {
     View,
     Text,
@@ -17,9 +17,11 @@ import {
 import Categories from '../components/Categories'
 import FeaturedRow from '../components/FeaturedRow'
 import { DeliverooColor } from '../assets/Colors'
+import { fetchRestaurants } from '../sanity'
 
 const HomeScreen = () => {
     const [searchItem, setSearchItem] = useState("")
+    const [featuredCategories, setFeaturedCategories] = useState([])
 
     const navigation = useNavigation(); // to get the navigation object reference
 
@@ -32,11 +34,18 @@ const HomeScreen = () => {
         })
     }, [])
 
-    const loadSearchItem = (char) => {
-        console.log("loadSearchItem: ", char);
-        setSearchItem(char);
+    useEffect(() => {
+        fetchFeatueredData();
+    }, [])
+
+    const fetchFeatueredData = async () => {
+        const data = await fetchRestaurants();
+        setFeaturedCategories(data);
     }
 
+    const loadSearchItem = (char) => {
+        setSearchItem(char);
+    }
 
     return (
         <SafeAreaView className='pt-5 bg-slate-50 mb-24'>
@@ -81,23 +90,19 @@ const HomeScreen = () => {
                 <Categories />
 
                 {/* Featured Row */}
-                <FeaturedRow
-                    id="123"
-                    title="Offers near you!"
-                    description="Why not support your local restaurant tonight!"
-                />
 
-                <FeaturedRow
-                    id="1234"
-                    title="Featured"
-                    description="Paid placements for our partners"
-                />
-
-                <FeaturedRow
-                    id="12345"
-                    title="Tasty Discounts"
-                    description="Paid placements for our partners"
-                />
+                {
+                    featuredCategories?.map((category) => {
+                        return (
+                            <FeaturedRow
+                                key={category._id}
+                                id={category._id}
+                                title={category.name}
+                                description={category.short_description}
+                            />
+                        )
+                    })
+                }
 
             </ScrollView>
 
